@@ -1,4 +1,4 @@
-add table Participants
+CREATE TABLE Participants
 (
     INTEGER unique_key NOT NULL AUTOINCRMENT,
     VARCHAR(20) first_name NOT NULL,
@@ -8,7 +8,7 @@ add table Participants
     PRIMARY KEY (unique_key)
 );
 
-add table Trainers
+CREATE TABLE Trainers
 (
     INTEGER unique_key NOT NULL AUTOINCRMENT,
     VARCHAR(20) first_name NOT NULL,
@@ -19,7 +19,7 @@ add table Trainers
     PRIMARY KEY (unique_key)
 );
 
-add table Address
+CREATE TABLE Address
 (
     INTEGER unique_key NOT NULL AUTOINCREMENT,
     VARCHAR(20) street_name NOT NULL,
@@ -33,7 +33,7 @@ add table Address
 
 );
 
-add table Program
+CREATE TABLE Program
 (
     INTEGER unique_key NOT NULL AUTOINCREMENT,
     VARCHAR(20) name NOT NULL,
@@ -42,7 +42,7 @@ add table Program
     PRIMARY KEY (unique_key)
 );
 
-add table Program_trainers
+CREATE TABLE Program_trainers
 (
     INTEGER trainer NOT NULL,
     INTEGER program NOT NULL,
@@ -51,7 +51,7 @@ add table Program_trainers
     FOREIGN KEY program REFERENCES Programs(unique_key)
 );
 
-add table Program_participation
+CREATE TABLE Program_participation
 (
     INTEGER participant NOT NULL,
     INTEGER program NOT NULL,
@@ -60,7 +60,7 @@ add table Program_participation
     FOREIGN KEY program REFERENCES Programs(unique_key)
 );
 
-add table Documents
+CREATE TABLE Documents
 (
     INTEGER unique_key NOT NULL AUTOINCREMENT,
     VARCHAR(500) description NOT NULL,
@@ -69,7 +69,7 @@ add table Documents
     PRIMARY KEY (unique_key)
 );
 
-add table Document_authors
+CREATE TABLE Document_authors
 (
     INTEGER document NOT NULL,
     INTEGER author NOT NULL,
@@ -78,7 +78,7 @@ add table Document_authors
     FOREIGN KEY author REFERENCES Authors(unique_key)
 );
 
-add table Program_documents
+CREATE TABLE Program_documents
 (
     INTEGER program NOT NULL,
     INTEGER document NOT NULL,
