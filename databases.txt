@@ -1,0 +1,61 @@
+Subcategories:
+
+INTEGER unique_key PRIMARY KEY AUTOINCREMENT, TEXT name NOT NULL, INTEGER category NOT NULL, UNIQUE( name)
+// category is between 1 and N, where N is sthe number of categories we will have defined.
+    in order to have a nice user interface, we set a limited set of major categories, and allow users to create new subcategories to arrange data.
+	ex: hardcoded categories: apperitifs, main courses, desserts
+	    user categories: soups, salads, stews, pasta...
+
+    When a user adds a new recipe, he has to specify which category and subcategory it belongs to. If a desired subcategory doesn't exist, the user will define it, and it will be added to the subcategories table.
+    The idea of having subcategories is to have a nice way of organizing data and of presenting it to the users. For example, users can ask to see all the pasta recipes.
+    Every recipe MUST belong to a subcategory in order for it to be classified properly.
+    This table may only be appended with new rows during the creation of a new recipe, with the exeption of moderators who can delete it.
+
+Ingredients table:
+
+INTEGER unique_key PRIMARY KEY AUTOINCREMENT, TEXT name NOT NULL, UNIQUE(name)
+
+    This table respresents all the posible ingredients
+    This table can only be appended with new rows during the creation of a new recipe
+    Every ingredient must be stored in a separate table to allow searching by ingredients.
+
+
+
+units:
+
+INTEGER unique_key PRIMARY KEY AUTOINCREMENT, TEXT name NOT NULL, BOOLEAN isMetric
+
+    This table stores all the existing units.
+    This table is populated only once, at the start of the project by the moderators.
+    The contents of this table work as an enum for specifying quantities of ingredients required for a recipe.
+	ex: 100ml of vodka.  "ml" must be part of the units table.
+
+unit_conversions
+
+INTEGER unique_key PRIMARY KEY AUTOINCREMENT, INTEGER from NOT NULL, INTEGER to NOT NULL, FLOAT ratio, FOREIGN KEY (from) REFERENCES units(unique_key), FOREIGN KEY (to) REFERENCES units(unique_key)
+
+    This table contains the data for unit conversions.
+    The conversions can be either made from imperial to metric and vice versa, or between two units of the same type.
+	ex: conversion between tablespoons and teaspoons is 3-to-1
+    This table is populated only once, at the start of the project by the moderators.
+    The contents of this table work as an enum for specifying all the possible unit conversions.
+
+
+Ingredients_recipes
+
+INTEGER unique_key PRIMARY KEY AUTOINCREMENT, INTEGER ingredient NOT NULL, INTEGER recipe NOT NULL, INTEGER quantity NOT NULL, TEXT unit, FOREIGN KEY ( ingredient) REFERENCES ingredients(unique_key), FOREIGN KEY (recipe) REFERENCES recipes (unique_key), FOREIGN KEY quantity REFERENCES units(unique_key)
+
+    This table shows shich ingredients are needed for any recipe, and in what amount.
+    This table is appended during the creation of a new recipe, with one row pper ingredient added.
+    Rows from this table must be deleted when a recipe is deleted by its creator or by a moderator.
+
+recipes:
+
+INTEGER unique_key PRIMARY KEY AUTOINCREMENT, TEXT title NOT NULL, INTEGER author NOT NULL, TEXT instructions NOT NULL, INTEGER cook_time, INTEGER preparation_time, DATETIME date_added NOT NULL, BOOLEAN is_vegan, BOOLEAN is_vegetarian, BOOLEAN is_gluten_free, BOOLEAN is_lactose_free, BOOLEAN is_nut_free, INTEGER servings, INTEGER subcategory, FOREIGN KEY (author) REFERENCES users(unique_key), FOREIGN KEY subcategory REFERENCES subcategories(unique_key), UNIQUE(title)
+
+    This is the table containing all the recipes
+    Any user can append new rows to this table when adding a new recipe.
+    Any user can remove rows from this table when deleting his own recipe.
+    Any moderator can remove any rows from this table.
+    When adding a new recipe all the fields must be filled in by the user.
+    
