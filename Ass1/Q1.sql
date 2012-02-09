@@ -23,13 +23,13 @@ CREATE TABLE Address
 (
     INTEGER unique_key NOT NULL AUTOINCREMENT,
     VARCHAR(20) street_name NOT NULL,
-    VARCHAR(10) street_number NOT NULL, #so 12A can work
+    VARCHAR(10) street_number NOT NULL, --so 12A can work
     VARCHAR(10) appartment,
     VARCHAR(6) postal_code NOT NULL,
     VARCHAR(20) province NOT NULL,
     VARCHAR(20) country NOT NULL,  
     PRIMARY KEY (unique_key),
-    UNIQUE(street_name,street_number, appartment, postal_code, country) #sufficient uniqueness conditions
+    UNIQUE(street_name,street_number, appartment, postal_code, country) --sufficient uniqueness conditions
 
 );
 
