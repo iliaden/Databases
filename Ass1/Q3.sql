@@ -48,16 +48,20 @@ add table E2
     PRIMARY KEY (k2)
 );  
 
---fourth option - shared PK
+--fourth option - pk is both local and fk
 --FIXME: actually do it...
 
 add table E1
 (
     INTEGER k1 NOT NULL AUTOINCREMENT,
-    PRIMARY KEY (k1)
+    INTEGER k2 NOT NULL,
+    FOREIGN KEY (k2) REFERENCES E2(k2),
+    PRIMARY KEY (k1, k2)
 );
 add table E2
 (
     INTEGER k2 NOT NULL AUTOINCREMENT,
-    PRIMARY KEY (k2)
+    INTEGER k1 NOT NULL,
+    FOREIGN KEY (k1) REFERENCES E1(k1),
+    PRIMARY KEY (k1, k2)
 );  
