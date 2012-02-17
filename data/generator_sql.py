@@ -11,7 +11,7 @@ def strTimeProp(start, end, format, prop):
     return time.strftime(format, time.localtime(ptime))
 
 def randomDate(start, end, prop):
-    return strTimeProp(start, end, '%m/%d/%Y %I:%M %p', prop)
+    return strTimeProp(start, end, '%Y-%m-%d-%H.%M.%s', prop)
 def date_generator():
     return randomDate("1/1/2000 1:30 PM", "1/1/2011 4:50 AM", random.random())
 def new_date():
