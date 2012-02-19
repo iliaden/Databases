@@ -17,16 +17,18 @@ def date_generator():
 def new_date():
     return randomDate("1/2/2011 1:30 PM", "1/1/2012 4:50 AM", random.random())
 def rand_bool():
-    if random.randrange(1,3) ==1:
-	    return False
-    else:
+    if random.randrange(1,5) ==1:
 	    return True
+    else:
+	    return False
 def str_generator():
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
     string = ''
     for x in random.sample(alphabet,random.randint(5,15)):
       string+=x
     return string
+def path_generator():
+    return='/home/user/databases/pictures/'+str_generator()+'.jpg'
 
 
 user_count=10000
@@ -39,12 +41,14 @@ picture_rating_count=50000
 ingredients_count = 500
 constituents_count=2500
 subcategory_count=25
+category_count=5
 
 users=[]
 favorites=[]
 recipes=[]
 comments=[]
 subcategories=[]
+categories=[]
 ratings=[]
 pictures=[]
 pic_ratings=[]
@@ -66,6 +70,20 @@ unit_list=[]
 unit_list.append('default')
 unit_list.append('imperial')
 unit_list.append('metric')
+users.append( (unique_key, #we need 1 pre-existing user
+id_generator(),
+str_generator(),
+str_generator(),
+date_generator(),
+id_generator(),
+str_generator() + "@" + str_generator()+".com",
+path_generator(),
+unit_list[0],
+random.randrange(1,100),
+rand_bool(),
+rand_bool(),
+'NULL' )
+
 for i in xrange(user_count):
 	#create user tuple
 	#unique_key,username,first_name, last_name, date_joined, password, email, photo, unit_preference, recipes_displayed, show_email, is_moderator, favorite_chef
@@ -79,26 +97,34 @@ for i in xrange(user_count):
 	date_generator(),
 	id_generator(),
 	str_generator() + "@" + str_generator()+".com",
-	'NULL',
+	path_generator(),
 	unit_list[0],
-	rand_bool(),
 	random.randrange(1,100),
 	rand_bool(),
 	rand_bool(),
-	'NULL' )
+	random.choice(users)[0] )
 	users.append(tup)
+
+for i in xrange(category_count):
+    unique_key +=1
+    #id, name, category,
+    tup = (unique_key, str_generator() )
+    categories.append(tup)
 
 for i in xrange(subcategory_count):
     unique_key +=1
     #id, name, category,
-    tup = (unique_key, str_generator(), random.randrange(1,5) )
+    tup = (unique_key, str_generator(),
+    random.choice(categories)[0] )
     subcategories.append(tup)
 
 
 
 for i in xrange(ingredients_count):
     unique_key +=1
-    tup = (unique_key, str_generator() )
+    tup = (unique_key,
+    str_generator(), #name
+    random.choice(units)[0] #unit)
     ingredients.append(tup)
 
 
@@ -140,8 +166,8 @@ for i in xrange(picture_count):
     random.choice(users)[0], #user
     random.choice(recipes)[0], #recipe
     date_generator(), #date added
-    'NULL', #data
-    str_generator() )
+    path_generator(), #data
+    str_generator() #caption/comment)
     pictures.append(tup)
 
 for i in xrange(picture_rating_count):
@@ -149,7 +175,7 @@ for i in xrange(picture_rating_count):
     tup = (unique_key,
     random.choice(users)[0], #user
     random.choice(pictures)[0], #picture
-    random.randrange(1,10) ) #score
+    random.randrange(1,11) ) #score
     pic_ratings.append(tup)
 
 for i in xrange(ratings_count):
@@ -157,7 +183,7 @@ for i in xrange(ratings_count):
     tup = ( unique_key,
     random.choice(users)[0], #user
     random.choice(recipes)[0], #recipe
-    random.randrange(1,10) ) #score
+    random.randrange(1,11) ) #score
     ratings.append(tup)
 
 for i in xrange(fav_recipe_count):
@@ -200,6 +226,10 @@ out.close()
 out=open("subcategories.data","w")
 for i in xrange(len(subcategories)):
     print >>out,subcategories[i]
+out.close()
+out=open("categories.data","w")
+for i in xrange(len(categories)):
+    print >>out,categories[i]
 out.close()
 out=open("ratings.data","w")
 for i in xrange(len(ratings)):
