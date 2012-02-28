@@ -11,7 +11,7 @@ def strTimeProp(start, end, format, prop):
     return time.strftime(format, time.localtime(ptime))
 
 def randomDate(start, end, prop):
-    return strTimeProp(start, end, '%Y-%m-%d-%H.%M.%s', prop)
+    return strTimeProp(start, end, '%d/%m/%Y %I:%M %p', prop)
 def date_generator():
     return randomDate("1/1/2000 1:30 PM", "1/1/2011 4:50 AM", random.random())
 def new_date():
@@ -28,7 +28,7 @@ def str_generator():
       string+=x
     return string
 def path_generator():
-    return='/home/user/databases/pictures/'+str_generator()+'.jpg'
+    return '/home/user/databases/pictures/'+str_generator()+'.jpg'
 
 
 user_count=10000
@@ -82,7 +82,7 @@ unit_list[0],
 random.randrange(1,100),
 rand_bool(),
 rand_bool(),
-'NULL' )
+'NULL' ) )
 
 for i in xrange(user_count):
 	#create user tuple
@@ -124,7 +124,7 @@ for i in xrange(ingredients_count):
     unique_key +=1
     tup = (unique_key,
     str_generator(), #name
-    random.choice(units)[0] #unit)
+    random.choice(units)[0] ) #unit)
     ingredients.append(tup)
 
 
@@ -167,7 +167,7 @@ for i in xrange(picture_count):
     random.choice(recipes)[0], #recipe
     date_generator(), #date added
     path_generator(), #data
-    str_generator() #caption/comment)
+    str_generator() )#caption/comment)
     pictures.append(tup)
 
 for i in xrange(picture_rating_count):
